@@ -40,13 +40,9 @@ public class RDFModel {
         Resource tweetResource = this.model.createResource(tweetURI);
         
         // Properties of 'tweet'
-        Property textTweet = model.createProperty(tweetURI, "tweet");
-        Property idTweet = model.createProperty(tweetURI, "id_tweet");
-        Property dateTweet = model.createProperty(tweetURI, "date_tweet");
-        Property languageTweet = model.createProperty(tweetURI, "language_tweet");
-        Property searchTweet = model.createProperty(tweetURI, "search_tweet");
-        Property authorTweet = model.createProperty(tweetURI, "author_tweet");
-        Property replyTweet = model.createProperty(tweetURI, "reply_tweet");
+        Property textTweet = this.model.createProperty(tweetURI, "tweet");
+        Property idTweet = this.model.createProperty(tweetURI, "id_tweet");
+        Property dateTweet = this.model.createProperty(tweetURI, "date_tweet");
         
         // Add properties
         tweetResource.addProperty(DC_11.description, textTweet);
@@ -58,31 +54,39 @@ public class RDFModel {
         // Resource 'user'
         Resource userResource = this.model.createResource(userURI);
         // Properties of 'user'
-        Property userName = model.createProperty(userURI, "user_name");
-        Property userLocation = model.createProperty(userURI, "user_location");
+        Property userName = this.model.createProperty(userURI, "user_name");
+        Property userLocation = this.model.createProperty(userURI, "user_location");
+        
+        // Add properties
+        userResource.addProperty(DC_11.publisher, userName);
+        userResource.addProperty(DC_11.coverage, userLocation);
     }
 
     private void createResourceLanguage() {
         // Resource 'language'
         Resource languageResource = this.model.createResource(languageURI);
         // Properties of 'theme'
-        Property languageLabel = model.createProperty(languageURI, "language_label");
-        Property idLanguage = model.createProperty(languageURI, "id_language");
+        Property languageLabel = this.model.createProperty(languageURI, "language_label");
+        Property idLanguage = this.model.createProperty(languageURI, "id_language");
+        
+        // Add properties
+        languageResource.addProperty(DC_11.description, languageLabel);
+        languageResource.addProperty(DC_11.identifier, idLanguage);
     }
 
     private void createResourceSearchedTheme() {
         // Resource 'searchedTheme'
         Resource searchedThemeResource = this.model.createResource(searchedThemeURI);
-        // Properties of 'searchedTheme'
-        Property type = model.createProperty(searchedThemeURI, "theme_type");
     }
 
     private void createResourceTheme() {
         // Resource 'theme'
         Resource themeResource = this.model.createResource(themeURI);
         // Properties of 'theme'
-        Property themeLabel = model.createProperty(themeURI, "theme_label");
-        //themeResource.addProperty(vocabulario, themeLabel);
+        Property themeLabel = this.model.createProperty(themeURI, "theme_label");
+        
+        // Add properties
+        themeResource.addProperty(DC_11.description, themeLabel);
     }
 
     private void createResourceReplyTo() {
