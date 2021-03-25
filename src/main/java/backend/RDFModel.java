@@ -7,6 +7,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.vocabulary.DC_11;
+import org.apache.jena.vocabulary.VCARD;
 
 /**
  *
@@ -14,30 +15,40 @@ import org.apache.jena.vocabulary.DC_11;
  */
 public class RDFModel {
     private final Model model;
-    private final String tweetURI = "http://www.si2.com/tweetresource/";
-    private final String userURI = "http://www.si2.com/userresource/";
-    private final String searchedThemeURI = "http://www.si2.com/searchedthemeresource/";
-    private final String themeURI = "http://www.si2.com/themeresource/";
-    private final String languageURI = "http://www.si2.com/languageresource/";
-    private final String replyURI = "http://www.si2.com/replyresource/";
-        
+    private final String tweetURI = "http://www.si2.com/si2#tweetresource";
+    private final String userURI = "http://www.si2.com/si2#userresource";
+    private final String searchedThemeURI = "http://www.si2.com/si2#searchedthemeresource";
+    private final String themeURI = "http://www.si2.com/si2#themeresource";
+    private final String languageURI = "http://www.si2.com/si2#languageresource";
+    private final String replyURI = "http://www.si2.com/si2#replyresource";
+    
+    private Resource userResource;
+    private Resource languageResource;
+    private Resource searchedThemeResource;
+    private Resource themeResource;
+    private Resource tweetResource;
+    private Resource replyResource;
+    
     public RDFModel() {
         this.model = ModelFactory.createDefaultModel();
+        this.model.setNsPrefix("si2", "http://www.si2.com/si2#");
+        this.model.setNsPrefix("dc11", "http://purl.org/dc/elements/1.1/");
+        this.model.setNsPrefix("vcard", "http://www.w3.org/2001/vcard-rdf/3.0#");
         this.createModel();
     }
 
     private void createModel() {
-        this.createResourceTweet();
         this.createResourceUser();
         this.createResourceLanguage();
-        this.createResourceSearchedTheme();
         this.createResourceTheme();
+        this.createResourceSearchedTheme();
+        this.createResourceTweet();
         this.createResourceReplyTo();
     }
 
     private void createResourceTweet() {
         // Resource 'tweet'
-        Resource tweetResource = this.model.createResource(tweetURI);
+        this.tweetResource = this.model.createResource(tweetURI);
         
         // Properties of 'tweet'
         Property textTweet = this.model.createProperty(tweetURI, "tweet");
@@ -48,11 +59,14 @@ public class RDFModel {
         tweetResource.addProperty(DC_11.description, textTweet);
         tweetResource.addProperty(DC_11.identifier, idTweet);
         tweetResource.addProperty(DC_11.date, dateTweet);
+        tweetResource.addProperty(DC_11.creator, this.userResource);
+        tweetResource.addProperty(DC_11.language, this.languageResource);
+        tweetResource.addProperty(DC_11.relation, this.searchedThemeResource);
     }
 
     private void createResourceUser() {
         // Resource 'user'
-        Resource userResource = this.model.createResource(userURI);
+        this.userResource = this.model.createResource(userURI);
         // Properties of 'user'
         Property userName = this.model.createProperty(userURI, "user_name");
         Property userLocation = this.model.createProperty(userURI, "user_location");
@@ -64,7 +78,7 @@ public class RDFModel {
 
     private void createResourceLanguage() {
         // Resource 'language'
-        Resource languageResource = this.model.createResource(languageURI);
+        this.languageResource = this.model.createResource(languageURI);
         // Properties of 'theme'
         Property languageLabel = this.model.createProperty(languageURI, "language_label");
         Property idLanguage = this.model.createProperty(languageURI, "id_language");
@@ -76,29 +90,33 @@ public class RDFModel {
 
     private void createResourceSearchedTheme() {
         // Resource 'searchedTheme'
-        Resource searchedThemeResource = this.model.createResource(searchedThemeURI);
+        this.searchedThemeResource = this.model.createResource(searchedThemeURI);
+        
+        // Add properties
+        this.searchedThemeResource.addProperty(DC_11.type, this.themeResource);
     }
 
     private void createResourceTheme() {
         // Resource 'theme'
-        Resource themeResource = this.model.createResource(themeURI);
+        this.themeResource = this.model.createResource(themeURI);
         // Properties of 'theme'
         Property themeLabel = this.model.createProperty(themeURI, "theme_label");
         
         // Add properties
-        themeResource.addProperty(DC_11.description, themeLabel);
+        this.themeResource.addProperty(DC_11.description, themeLabel);
     }
 
     private void createResourceReplyTo() {
         // Resource 'replyTweet'
-        Resource replyResource = this.model.createResource(replyURI);
-        // ???
+        this.replyResource = this.model.createResource(replyURI);
+         
+        this.tweetResource.addProperty(VCARD.SOURCE, this.replyResource);
     }
 
     
-    public void printGraph() {
+    public void saveGraph() {
         System.out.println("++++++++++++++++++++++");
-        RDFDataMgr.write(System.out, this.model, RDFFormat.TURTLE_PRETTY);
+        RDFDataMgr.write(System.out, this.model, RDFFormat.TURTLE_BLOCKS);
         System.out.println("++++++++++++++++++++++");
     }
     
