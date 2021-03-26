@@ -18,6 +18,7 @@ public class FileReader {
     public FileReader(String fileName) {
         this.fileName = fileName;
         this.keys = new HashMap<>();
+        this.read();
     }
     
     public void read() {
@@ -45,7 +46,7 @@ public class FileReader {
             this.keys.put("AccessToken", keys.get(2));
             this.keys.put("AccessTokenSecret", keys.get(3));
         }else{
-            System.out.println("Error in file");
+            System.out.println("Error in file file");
         }
     }
     

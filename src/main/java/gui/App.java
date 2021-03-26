@@ -1,13 +1,17 @@
 package gui;
 
 import backend.FileReader;
+import backend.RDFModel;
+import backend.TwitterConnection;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import twitter4j.TwitterException;
 
 /**
  *
@@ -39,15 +43,16 @@ public class App extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup = new javax.swing.ButtonGroup();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jLabel4 = new javax.swing.JLabel();
+        termLabel = new javax.swing.JLabel();
+        term = new javax.swing.JTextField();
+        themeLabel = new javax.swing.JLabel();
+        theme = new javax.swing.JTextField();
+        numTweetsLabel = new javax.swing.JLabel();
+        tweetsSpinner = new javax.swing.JSpinner();
+        formatLabel = new javax.swing.JLabel();
         turtleFormat = new javax.swing.JRadioButton();
         XMLFormat = new javax.swing.JRadioButton();
+        search = new javax.swing.JButton();
         menu = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         keysMenu = new javax.swing.JMenuItem();
@@ -62,29 +67,29 @@ public class App extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("RDF Tweet");
 
-        jLabel2.setText("Term to search");
+        termLabel.setText("Term to search");
 
-        jTextField1.setToolTipText("Write term");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        term.setToolTipText("Write term");
+        term.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                termActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Theme to search");
+        themeLabel.setText("Theme to search");
 
-        jTextField2.setToolTipText("Write theme");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        theme.setToolTipText("Write theme");
+        theme.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                themeActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Number of tweets");
+        numTweetsLabel.setText("Number of tweets");
 
-        jSpinner1.setToolTipText("Number of tweets");
+        tweetsSpinner.setToolTipText("Number of tweets");
 
-        jLabel4.setText("Format");
+        formatLabel.setText("Format");
 
         turtleFormat.setSelected(true);
         turtleFormat.setText("Turtle");
@@ -95,6 +100,13 @@ public class App extends javax.swing.JFrame {
         });
 
         XMLFormat.setText("XML");
+
+        search.setText("Search");
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
 
         fileMenu.setText("File");
 
@@ -159,44 +171,48 @@ public class App extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(turtleFormat)
-                        .addGap(18, 18, 18)
-                        .addComponent(XMLFormat))
+                    .addComponent(termLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(themeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(formatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(numTweetsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addComponent(tweetsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(theme, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                        .addComponent(term, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(search)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(turtleFormat)
+                            .addGap(18, 18, 18)
+                            .addComponent(XMLFormat))))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jLabel2)
+                .addComponent(termLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(term, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(jLabel3)
+                .addComponent(themeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(theme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(tweetsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numTweetsLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jLabel4)
+                .addComponent(formatLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(turtleFormat)
                     .addComponent(XMLFormat))
-                .addGap(42, 42, 42))
+                .addGap(30, 30, 30)
+                .addComponent(search)
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -210,8 +226,15 @@ public class App extends javax.swing.JFrame {
             
             FileWriter writer;
             try {
-                writer = new FileWriter(fileName + ".ttl");
-                writer.close();
+                if(turtleFormat.isSelected()) {
+                    writer = new FileWriter(fileName + ".ttl");
+                    // RDFModel.write(writer, model, RDFFormat.TURTLE_BLOCKS);
+                    writer.close();
+                }else{
+                    writer = new FileWriter(fileName + ".rdf");
+                    // RDFModel.write(writer, model, RDFFormat.RDFXML);
+                    writer.close();
+                }
                 JOptionPane.showMessageDialog(this, "File saved", "Your file has been saved!", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Error", "File could not be saved", JOptionPane.ERROR_MESSAGE);
@@ -228,23 +251,34 @@ public class App extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exitMenuActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void termActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_termActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_termActionPerformed
 
     private void keysMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keysMenuActionPerformed
         int res = fc.showOpenDialog(null);
         
         if(res == JFileChooser.APPROVE_OPTION) {
             FileReader reader = new FileReader(fc.getSelectedFile().getAbsolutePath());
-            reader.read();
-            System.out.println(reader.getKeys());
+            try {
+                TwitterConnection connection = new TwitterConnection((HashMap<String, String>) reader.getKeys());
+                boolean established = connection.createConnection();
+                if(established) {
+                    JOptionPane.showMessageDialog(this, "Connection has been established!", 
+                            "Connection established", JOptionPane.INFORMATION_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(this, "Connection failed!", 
+                            "Error to connect", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (TwitterException ex) {
+                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_keysMenuActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void themeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_themeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_themeActionPerformed
 
     private void docsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_docsMenuActionPerformed
         // TODO add your handling code here:
@@ -257,6 +291,17 @@ public class App extends javax.swing.JFrame {
     private void turtleFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_turtleFormatActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_turtleFormatActionPerformed
+
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+        if (term.getText().trim().isEmpty() || theme.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled", "Incomplete fields", 
+                    JOptionPane.WARNING_MESSAGE);
+        } else {
+            // search tweets
+            //RDFModel models = new RDFModel(term.getText(), theme.getText());
+            return;
+        }
+    }//GEN-LAST:event_searchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -297,19 +342,20 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JMenuItem docsMenu;
     private javax.swing.JMenuItem exitMenu;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JLabel formatLabel;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JMenuItem keysMenu;
     private javax.swing.JMenuBar menu;
+    private javax.swing.JLabel numTweetsLabel;
     private javax.swing.JMenuItem saveMenu;
+    private javax.swing.JButton search;
     private javax.swing.JPopupMenu.Separator separatorMenu1;
     private javax.swing.JPopupMenu.Separator separatorMenu2;
+    private javax.swing.JTextField term;
+    private javax.swing.JLabel termLabel;
+    private javax.swing.JTextField theme;
+    private javax.swing.JLabel themeLabel;
     private javax.swing.JRadioButton turtleFormat;
+    private javax.swing.JSpinner tweetsSpinner;
     // End of variables declaration//GEN-END:variables
 }

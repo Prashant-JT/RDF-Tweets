@@ -1,11 +1,11 @@
 gui\App$6.class
-backend\Main.class
 backend\FileReader.class
 gui\App$1.class
 gui\App$4.class
+backend\TwitterConnection.class
 gui\App$5.class
+gui\App$9.class
 backend\Data.class
-backend\TwitterWrapper.class
 gui\App$3.class
 gui\App.class
 gui\App$8.class

@@ -29,7 +29,7 @@ public class RDFModel {
     private Resource tweetResource;
     private Resource replyResource;
     
-    public RDFModel() {
+    public RDFModel(String term, String theme) {
         this.model = ModelFactory.createDefaultModel();
         this.model.setNsPrefix("si2", "http://www.si2.com/si2#");
         this.model.setNsPrefix("dc11", "http://purl.org/dc/elements/1.1/");
