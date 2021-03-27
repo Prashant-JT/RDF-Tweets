@@ -6,11 +6,13 @@ import backend.TwitterConnection;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
+import twitter4j.Status;
 import twitter4j.TwitterException;
 
 /**
@@ -19,16 +21,18 @@ import twitter4j.TwitterException;
  */
 public class App extends javax.swing.JFrame {
     
-    JFileChooser fc = new JFileChooser();
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("Text file", "txt");
+    private final JFileChooser fc = new JFileChooser();
+    private TwitterConnection connection;
+    private RDFModel models;
     
     /**
      * Creates new form App
      */
     public App() {
         initComponents();
+        this.connection = null;
         fc.setAcceptAllFileFilterUsed(false);
-        fc.addChoosableFileFilter(filter);
+        fc.addChoosableFileFilter(new FileNameExtensionFilter("Text file", "txt"));
         buttonGroup.add(turtleFormat);
         buttonGroup.add(XMLFormat);
     }
@@ -76,7 +80,7 @@ public class App extends javax.swing.JFrame {
             }
         });
 
-        themeLabel.setText("Theme to search");
+        themeLabel.setText("Theme of the term");
 
         theme.setToolTipText("Write theme");
         theme.addActionListener(new java.awt.event.ActionListener() {
@@ -87,6 +91,7 @@ public class App extends javax.swing.JFrame {
 
         numTweetsLabel.setText("Number of tweets");
 
+        tweetsSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 0, 50, 1));
         tweetsSpinner.setToolTipText("Number of tweets");
 
         formatLabel.setText("Format");
@@ -170,23 +175,22 @@ public class App extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(termLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(themeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(formatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(numTweetsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tweetsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(theme, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                        .addComponent(term, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(numTweetsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tweetsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(theme, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(term)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(search)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(turtleFormat)
                             .addGap(18, 18, 18)
-                            .addComponent(XMLFormat))))
+                            .addComponent(XMLFormat)))
+                    .addComponent(themeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(termLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -228,16 +232,16 @@ public class App extends javax.swing.JFrame {
             try {
                 if(turtleFormat.isSelected()) {
                     writer = new FileWriter(fileName + ".ttl");
-                    // RDFModel.write(writer, model, RDFFormat.TURTLE_BLOCKS);
+                    RDFDataMgr.write(writer, this.models.getModel(), RDFFormat.TURTLE_BLOCKS);
                     writer.close();
                 }else{
                     writer = new FileWriter(fileName + ".rdf");
-                    // RDFModel.write(writer, model, RDFFormat.RDFXML);
+                    RDFDataMgr.write(writer, this.models.getModel(), RDFFormat.RDFXML);
                     writer.close();
                 }
-                JOptionPane.showMessageDialog(this, "File saved", "Your file has been saved!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Your file has been saved!", "File saved", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error", "File could not be saved", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "File could not be saved", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_saveMenuActionPerformed
@@ -261,7 +265,7 @@ public class App extends javax.swing.JFrame {
         if(res == JFileChooser.APPROVE_OPTION) {
             FileReader reader = new FileReader(fc.getSelectedFile().getAbsolutePath());
             try {
-                TwitterConnection connection = new TwitterConnection((HashMap<String, String>) reader.getKeys());
+                connection = new TwitterConnection((HashMap<String, String>) reader.getKeys());
                 boolean established = connection.createConnection();
                 if(established) {
                     JOptionPane.showMessageDialog(this, "Connection has been established!", 
@@ -271,7 +275,8 @@ public class App extends javax.swing.JFrame {
                             "Error to connect", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (TwitterException ex) {
-                Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Connection failed!", 
+                            "Error to connect", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_keysMenuActionPerformed
@@ -281,7 +286,11 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_themeActionPerformed
 
     private void docsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_docsMenuActionPerformed
-        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "1. Import keys from a text file which must be written in the following order: \n" +
+                "ConsumerKey\nConsumerSecret\nAccessToken\nAccessTokenSecret\n" + 
+                "2. Once the connection is established, fill all fields to retrieve data \n"
+                + "3. Finally, select the format in which you would like to save the RDF model", 
+                "Instructions", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_docsMenuActionPerformed
 
     private void authorMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorMenuActionPerformed
@@ -296,10 +305,23 @@ public class App extends javax.swing.JFrame {
         if (term.getText().trim().isEmpty() || theme.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields must be filled", "Incomplete fields", 
                     JOptionPane.WARNING_MESSAGE);
+        } else if(this.connection == null) {
+            JOptionPane.showMessageDialog(this, "Connection hasn't been established.\n"
+                    + "To import keys go to:\nFile > Import Keys", 
+                    "Keys not imported", JOptionPane.WARNING_MESSAGE);
         } else {
-            // search tweets
-            //RDFModel models = new RDFModel(term.getText(), theme.getText());
-            return;
+            try {
+                List<Status> tweets = connection.searchTweets(theme.getText(), (int) tweetsSpinner.getValue());
+                this.models = new RDFModel(term.getText(), theme.getText());
+                for (Status tweet : tweets) {
+                    this.models.createModel(tweet);
+                }
+                JOptionPane.showMessageDialog(this, "Model created!\nTo save model go to:\nFile > Save", 
+                            "Model generated", JOptionPane.INFORMATION_MESSAGE);
+            } catch (TwitterException ex) {
+                JOptionPane.showMessageDialog(this, "An error has ocurred in retrieving data!", 
+                            "Error to retrieve", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_searchActionPerformed
 
@@ -332,6 +354,7 @@ public class App extends javax.swing.JFrame {
         
         App mainFrame = new App();
         mainFrame.setLocationRelativeTo(null);
+        mainFrame.setResizable(false);
         mainFrame.setVisible(true);
     }
 

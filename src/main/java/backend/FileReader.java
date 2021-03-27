@@ -1,6 +1,7 @@
 package backend;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +27,8 @@ public class FileReader {
         Scanner myReader = null;
         try {
             myReader = new Scanner(file);
-        } catch (Exception ex) {
-            System.out.println("Error reading file");
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found");
         }
         
         List<String> keys = new ArrayList<>();
