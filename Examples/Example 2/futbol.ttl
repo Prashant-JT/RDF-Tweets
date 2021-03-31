@@ -1,0 +1,78 @@
+@prefix dc11:  <http://purl.org/dc/elements/1.1/> .
+@prefix rdf:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdfs:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix vcard:  <http://www.w3.org/2001/vcard-rdf/3.0/> .
+@prefix voc:  <http://www.si2.com/si2#replyresource/> .
+
+<http://www.si2.com/si2#tweetresource/1377375641113354244>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/Messi> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/es> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/735973525945786368> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377375641113354244" ;
+        dc11:description  "RT @verobrunati: Un 30 de marzo de 1994 @Newells inscribió oficialmente en la Asociación Rosarina a. #Messi con tan sólo 6 años. En su prim…" .
+
+<http://www.si2.com/si2#languageresource/es>
+        dc11:description  "español" ;
+        dc11:identifier   "es" .
+
+<http://www.si2.com/si2#languageresource/fr>
+        dc11:description  "francés" ;
+        dc11:identifier   "fr" .
+
+<http://www.si2.com/si2#searchedthemeresource/Neymar>
+        dc11:type  <http://www.si2.com/si2#themeresource/Fútbol> .
+
+<http://www.si2.com/si2#userresource/1189672348309438465>
+        dc11:coverage   "" ;
+        dc11:publisher  "joaoribeiro" .
+
+<http://www.si2.com/si2#languageresource/pt>
+        dc11:description  "portugués" ;
+        dc11:identifier   "pt" .
+
+<http://www.si2.com/si2#userresource/1239768016642072576>
+        dc11:coverage   "Paris, France" ;
+        dc11:publisher  "coe_mkzin" .
+
+<http://www.si2.com/si2#userresource/735973525945786368>
+        dc11:coverage   "" ;
+        dc11:publisher  "Lucas Bertossi" .
+
+<http://www.si2.com/si2#userresource/1271402633484537856>
+        dc11:coverage   "" ;
+        dc11:publisher  "Jerome Aaarh" .
+
+<http://www.si2.com/si2#searchedthemeresource/Ronaldo>
+        dc11:type  <http://www.si2.com/si2#themeresource/Fútbol> .
+
+<http://www.si2.com/si2#themeresource/Fútbol>
+        rdf:label  "Jugadore de fútbol" ;
+        rdfs:type  rdf:Class .
+
+<http://www.si2.com/si2#searchedthemeresource/Messi>
+        dc11:type  <http://www.si2.com/si2#themeresource/Fútbol> .
+
+<http://www.si2.com/si2#tweetresource/1377375761343123463>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/Ronaldo> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/es> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/1189672348309438465> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377375761343123463" ;
+        dc11:description  "RT @TeamCRonaldo: Cristiano Ronaldo's La Liga numbers for Real Madrid are Insane 🤯 https://t.co/GZx1re00wJ" .
+
+<http://www.si2.com/si2#tweetresource/1377375905660633098>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/Neymar> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/pt> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/1239768016642072576> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377375905660633098" ;
+        dc11:description  "RT @neymarjrdepre: Simplesmente Neymar Jr, o homem não para kkkkkkkkkk https://t.co/pX8u4YNfQC" .
+
+<http://www.si2.com/si2#tweetresource/1377375638051454976>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/Messi> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/fr> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/1271402633484537856> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377375638051454976" ;
+        dc11:description  "RT @UnibetFrance: 😍 Il fête ses 30 ans de mignonnerie aujourd'hui :\n\n🌍 1 Coupe du Monde\n🏆 1 Ligue Europa\n🏆🏆 2 Premier League\n🇬🇧 1 FA Cup…" .

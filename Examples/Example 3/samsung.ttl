@@ -1,0 +1,116 @@
+@prefix dc11:  <http://purl.org/dc/elements/1.1/> .
+@prefix rdf:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdfs:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix vcard:  <http://www.w3.org/2001/vcard-rdf/3.0/> .
+@prefix voc:  <http://www.si2.com/si2#replyresource/> .
+
+<http://www.si2.com/si2#languageresource/en>
+        dc11:description  "inglés" ;
+        dc11:identifier   "en" .
+
+<http://www.si2.com/si2#tweetresource/1377377279265841154>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/Móvil> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/es> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/543074839> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377377279265841154" ;
+        dc11:description  "Sandra le dice a jesus la distancia y le coje el movil a Manuehhh" .
+
+<http://www.si2.com/si2#userresource/1349125345207857153>
+        dc11:coverage   "" ;
+        dc11:publisher  "bby.noa" .
+
+<http://www.si2.com/si2#tweetresource/1377377277135048708>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/Móvil> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/es> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/1349125345207857153> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377377277135048708" ;
+        dc11:description  "RT @_riverss_: Me gustaría ser rica nivel llevar el móvil sin funda" .
+
+<http://www.si2.com/si2#tweetresource/1377377286974935043>
+        voc:reply_to      <http://www.si2.com/si2#tweetresource/1377376995814875136> ;
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/Móvil> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/es> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/841762757301161984> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377377286974935043" ;
+        dc11:description  "@Willy_Whisky Iba sin la foto pero no se usar el móvil aparentemente" .
+
+<http://www.si2.com/si2#userresource/1347726895517990914>
+        dc11:coverage   "" ;
+        dc11:publisher  "Tori41" .
+
+<http://www.si2.com/si2#languageresource/es>
+        dc11:description  "español" ;
+        dc11:identifier   "es" .
+
+<http://www.si2.com/si2#userresource/543074839>
+        dc11:coverage   "A Coruña, España" ;
+        dc11:publisher  "Yoel Pestana 💙⚪💙" .
+
+<http://www.si2.com/si2#tweetresource/1377377430390726658>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/TV> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/en> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/1365346962070007811> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377377430390726658" ;
+        dc11:description  "Fun little stream. Thanks for those who stopped by.\n\nIn game the form is all over the place. Sitting Mid table though, and still a long way to go in the season!" .
+
+<http://www.si2.com/si2#tweetresource/1377377430839586819>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/TV> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/en> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/1353856806641164288> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377377430839586819" ;
+        dc11:description  "would you like for me to list the best tv shows I reccomend? I feel like I need to share my obsession for tv show… — omg please!  https://t.co/oiBu9hfQop" .
+
+<http://www.si2.com/si2#tweetresource/1377376995814875136>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/Móvil> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/es> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/841762757301161984> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377376995814875136" ;
+        dc11:description  "@Willy_Whisky Cawen la lexe me pille esa cami hace 5 dias https://t.co/P4Zhmdjyer" .
+
+<http://www.si2.com/si2#userresource/1365346962070007811>
+        dc11:coverage   "" ;
+        dc11:publisher  "Smoothman" .
+
+<http://www.si2.com/si2#tweetresource/1377377430843715584>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/TV> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/en> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/1347726895517990914> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377377430843715584" ;
+        dc11:description  "RT @miriamnoguerasM: Given the biased news coverage of tonight's match, @juntsxcat is registering a petition calling the chair of the Spani…" .
+
+<http://www.si2.com/si2#userresource/841762757301161984>
+        dc11:coverage   "Zaragoza, España" ;
+        dc11:publisher  "Víctor" .
+
+<http://www.si2.com/si2#searchedthemeresource/TV>
+        dc11:type  <http://www.si2.com/si2#themeresource/Samsung> .
+
+<http://www.si2.com/si2#userresource/830584750331006977>
+        dc11:coverage   "Cozumel, Quintana Roo" ;
+        dc11:publisher  "lilpompitass" .
+
+<http://www.si2.com/si2#searchedthemeresource/Móvil>
+        dc11:type  <http://www.si2.com/si2#themeresource/Samsung> .
+
+<http://www.si2.com/si2#themeresource/Samsung>
+        rdf:label  "Productos de Samsung" ;
+        rdfs:type  rdf:Class .
+
+<http://www.si2.com/si2#tweetresource/1377377429421973505>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/TV> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/es> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/830584750331006977> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377377429421973505" ;
+        dc11:description  "RT @Goddeessz: Amigos, otra vez hay sorteo, son 2 cs, tienen que estar en el stream para reclamarlo:)), los ganadores los daré el sábado 6p…" .
+
+<http://www.si2.com/si2#userresource/1353856806641164288>
+        dc11:coverage   "he/him | 24 | pan | sun ♡" ;
+        dc11:publisher  "dj ♡" .

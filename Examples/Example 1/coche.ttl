@@ -1,0 +1,68 @@
+@prefix dc11:  <http://purl.org/dc/elements/1.1/> .
+@prefix rdf:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdfs:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix vcard:  <http://www.w3.org/2001/vcard-rdf/3.0/> .
+@prefix voc:  <http://www.si2.com/si2#replyresource/> .
+
+<http://www.si2.com/si2#languageresource/en>
+        dc11:description  "inglés" ;
+        dc11:identifier   "en" .
+
+<http://www.si2.com/si2#tweetresource/1377374027786821635>
+        voc:reply_to      <http://www.si2.com/si2#tweetresource/1377368946983071753> ;
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/fiat> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/en> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/1226846577609891841> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377374027786821635" ;
+        dc11:description  "@cryptoJTT Jimmy, people are missing a trick. I don't wanna knock your analysis but #vechain is a dead cert. Western society is fucked. Fiat is fucked. #VeChain come along and fix things." .
+
+<http://www.si2.com/si2#userresource/1226846577609891841>
+        dc11:coverage   "The World (which is not flat) " ;
+        dc11:publisher  "Man2Planet Ⓥ" .
+
+<http://www.si2.com/si2#searchedthemeresource/fiat>
+        dc11:type  <http://www.si2.com/si2#themeresource/coche> .
+
+<http://www.si2.com/si2#tweetresource/1377373885306302466>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/seat> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/en> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/1252369840976924672> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377373885306302466" ;
+        dc11:description  "RT @newtgingrich: Congratulations to Congresswoman Marianettte Miller-Meeks for her victory as Democrat Rita Hart withdrew her objection to…" .
+
+<http://www.si2.com/si2#searchedthemeresource/seat>
+        dc11:type  <http://www.si2.com/si2#themeresource/coche> .
+
+<http://www.si2.com/si2#userresource/1252369840976924672>
+        dc11:coverage   "" ;
+        dc11:publisher  "Felicia Dee" .
+
+<http://www.si2.com/si2#themeresource/coche>
+        rdf:label  "Marca de coche" ;
+        rdfs:type  rdf:Class .
+
+<http://www.si2.com/si2#userresource/36327407>
+        dc11:coverage   "India" ;
+        dc11:publisher  "Hindustan Times" .
+
+<http://www.si2.com/si2#tweetresource/1377373889609748486>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/seat> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/en> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/36327407> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377373889609748486" ;
+        dc11:description  "#WestBengalElections | Actress @sayantika12 is the TMC candidate from the Bankura assembly seat this time\n\nHere's all you need to know about her https://t.co/XhGIsEwzJE\n\nVoting on the seat to take place today #ElectionsWithHT \n\nFollow 24x7 coverage https://t.co/ysX2hTlq49 https://t.co/BSJZxL36Gq" .
+
+<http://www.si2.com/si2#userresource/1350525957472309248>
+        dc11:coverage   "Roxbury Night Club" ;
+        dc11:publisher  "jimmytwotimes Ⓥ" .
+
+<http://www.si2.com/si2#tweetresource/1377368946983071753>
+        dc11:relation     <http://www.si2.com/si2#searchedthemeresource/fiat> ;
+        dc11:language     <http://www.si2.com/si2#languageresource/en> ;
+        dc11:creator      <http://www.si2.com/si2#userresource/1350525957472309248> ;
+        dc11:date         "31/3/2021" ;
+        dc11:identifier   "1377368946983071753" ;
+        dc11:description  "if you watched my stream you would know:\n\n1. this $vet dip was expected\n2. eth was going to rise\n3. an alt rally is right around the corner\n4. April will be big\n5. everything is on track\n\n#vefam #vechain #vet" .
