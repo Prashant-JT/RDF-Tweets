@@ -106,26 +106,36 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="formatLabel" alignment="0" min="-2" pref="101" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="numTweetsLabel" min="-2" pref="95" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="tweetsSpinner" min="-2" pref="50" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="theme" alignment="0" pref="175" max="32767" attributes="0"/>
+                  <Component id="jScrollPane" max="32767" attributes="0"/>
+                  <Component id="theme" alignment="0" max="32767" attributes="0"/>
                   <Component id="term" alignment="0" max="32767" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                      <Component id="search" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Component id="turtleFormat" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="XMLFormat" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
                   <Component id="themeLabel" alignment="0" max="32767" attributes="0"/>
                   <Component id="termLabel" alignment="0" max="32767" attributes="0"/>
+                  <Component id="themeDescriptionLabel" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="turtleFormat" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="numTweetsLabel" min="-2" pref="95" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="XMLFormat" min="-2" max="-2" attributes="0"/>
+                          <Component id="tweetsSpinner" min="-2" pref="50" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Component id="formatLabel" alignment="0" min="-2" pref="157" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="60" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jScrollPane1" pref="326" max="32767" attributes="0"/>
+                  <Component id="tweetsRetrievedLabel" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="-2" pref="250" max="-2" attributes="0"/>
+              <Component id="search" pref="103" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="250" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -133,26 +143,38 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-              <Component id="termLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="term" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-              <Component id="themeLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="theme" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="tweetsSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="numTweetsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="termLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="tweetsRetrievedLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="30" max="32767" attributes="0"/>
-              <Component id="formatLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="turtleFormat" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="XMLFormat" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="term" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="themeLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="theme" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="themeDescriptionLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="numTweetsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="tweetsSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="formatLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="turtleFormat" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="XMLFormat" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="search" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
           </Group>
@@ -201,13 +223,14 @@
     </Component>
     <Component class="javax.swing.JLabel" name="formatLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Format"/>
+        <Property name="text" type="java.lang.String" value="File format"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="turtleFormat">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Turtle"/>
+        <Property name="toolTipText" type="java.lang.String" value="Turtle format"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="turtleFormatActionPerformed"/>
@@ -218,13 +241,59 @@
         <Property name="text" type="java.lang.String" value="XML"/>
       </Properties>
     </Component>
+    <Component class="javax.swing.JLabel" name="themeDescriptionLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Theme description"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="themeDescription">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
     <Component class="javax.swing.JButton" name="search">
       <Properties>
         <Property name="text" type="java.lang.String" value="Search"/>
+        <Property name="alignmentX" type="float" value="0.5"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchActionPerformed"/>
       </Events>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="tweetsRetrieved">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="toolTipText" type="java.lang.String" value="Tweets retrieved"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="tweetsRetrievedLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tweets retrieved"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

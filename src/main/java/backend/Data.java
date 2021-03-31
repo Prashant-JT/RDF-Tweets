@@ -52,7 +52,7 @@ public class Data {
         return this.userLocation;
     }
     
-    private String dateFormat(Date date){
+    private String dateFormat(Date date) {
         int day = date.getDate();
         int month = date.getMonth() + 1;
         int year = date.getYear() + 1900;

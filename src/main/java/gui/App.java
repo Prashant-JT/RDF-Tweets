@@ -3,13 +3,17 @@ package gui;
 import backend.FileReader;
 import backend.RDFModel;
 import backend.TwitterConnection;
-import java.io.FileWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import twitter4j.Status;
@@ -24,6 +28,7 @@ public class App extends javax.swing.JFrame {
     private final JFileChooser fc = new JFileChooser();
     private TwitterConnection connection;
     private RDFModel models;
+    private Model createDefaultModel;
     
     /**
      * Creates new form App
@@ -31,6 +36,7 @@ public class App extends javax.swing.JFrame {
     public App() {
         initComponents();
         this.connection = null;
+        this.createDefaultModel = ModelFactory.createDefaultModel();
         fc.setAcceptAllFileFilterUsed(false);
         fc.addChoosableFileFilter(new FileNameExtensionFilter("Text file", "txt"));
         buttonGroup.add(turtleFormat);
@@ -56,7 +62,13 @@ public class App extends javax.swing.JFrame {
         formatLabel = new javax.swing.JLabel();
         turtleFormat = new javax.swing.JRadioButton();
         XMLFormat = new javax.swing.JRadioButton();
+        themeDescriptionLabel = new javax.swing.JLabel();
+        jScrollPane = new javax.swing.JScrollPane();
+        themeDescription = new javax.swing.JTextArea();
         search = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tweetsRetrieved = new javax.swing.JTextArea();
+        tweetsRetrievedLabel = new javax.swing.JLabel();
         menu = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         keysMenu = new javax.swing.JMenuItem();
@@ -94,10 +106,11 @@ public class App extends javax.swing.JFrame {
         tweetsSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 0, 50, 1));
         tweetsSpinner.setToolTipText("Number of tweets");
 
-        formatLabel.setText("Format");
+        formatLabel.setText("File format");
 
         turtleFormat.setSelected(true);
         turtleFormat.setText("Turtle");
+        turtleFormat.setToolTipText("Turtle format");
         turtleFormat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 turtleFormatActionPerformed(evt);
@@ -106,12 +119,28 @@ public class App extends javax.swing.JFrame {
 
         XMLFormat.setText("XML");
 
+        themeDescriptionLabel.setText("Theme description");
+
+        themeDescription.setColumns(20);
+        themeDescription.setRows(5);
+        themeDescription.setBorder(null);
+        jScrollPane.setViewportView(themeDescription);
+
         search.setText("Search");
+        search.setAlignmentX(0.5F);
         search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchActionPerformed(evt);
             }
         });
+
+        tweetsRetrieved.setEditable(false);
+        tweetsRetrieved.setColumns(20);
+        tweetsRetrieved.setRows(5);
+        tweetsRetrieved.setToolTipText("Tweets retrieved");
+        jScrollPane1.setViewportView(tweetsRetrieved);
+
+        tweetsRetrievedLabel.setText("Tweets retrieved");
 
         fileMenu.setText("File");
 
@@ -176,45 +205,62 @@ public class App extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(formatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(numTweetsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tweetsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(theme, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(jScrollPane)
+                    .addComponent(theme)
                     .addComponent(term)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(search)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(turtleFormat)
-                            .addGap(18, 18, 18)
-                            .addComponent(XMLFormat)))
                     .addComponent(themeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(termLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(60, Short.MAX_VALUE))
+                    .addComponent(termLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(themeDescriptionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(turtleFormat)
+                            .addComponent(numTweetsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(XMLFormat)
+                            .addComponent(tweetsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(formatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+                    .addComponent(tweetsRetrievedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(250, 250, 250)
+                .addComponent(search, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                .addGap(250, 250, 250))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(termLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(term, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(themeLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(theme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tweetsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(numTweetsLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(formatLabel)
+                    .addComponent(termLabel)
+                    .addComponent(tweetsRetrievedLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(turtleFormat)
-                    .addComponent(XMLFormat))
-                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(term, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(themeLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(theme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(themeDescriptionLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(numTweetsLabel)
+                            .addComponent(tweetsSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(formatLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(turtleFormat)
+                            .addComponent(XMLFormat)))
+                    .addComponent(jScrollPane1))
+                .addGap(18, 18, 18)
                 .addComponent(search)
                 .addGap(30, 30, 30))
         );
@@ -223,23 +269,31 @@ public class App extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuActionPerformed
+        fc.resetChoosableFileFilters();
+        if(turtleFormat.isSelected()) {
+            fc.addChoosableFileFilter(new FileNameExtensionFilter("Turtle file", "ttl"));
+        }else{
+            fc.addChoosableFileFilter(new FileNameExtensionFilter("XML file", "rdf"));
+        }
         int result = fc.showSaveDialog(this);
-                
+        
         if(result == JFileChooser.APPROVE_OPTION) {
             String fileName = fc.getSelectedFile().getAbsolutePath();
             
-            FileWriter writer;
+            OutputStream output;
             try {
                 if(turtleFormat.isSelected()) {
-                    writer = new FileWriter(fileName + ".ttl");
-                    RDFDataMgr.write(writer, this.models.getModel(), RDFFormat.TURTLE_BLOCKS);
-                    writer.close();
+                    output = new FileOutputStream(new File(fileName + ".ttl"));
+                    RDFDataMgr.write(output, createDefaultModel, RDFFormat.TURTLE_BLOCKS);
+                    output.close();
                 }else{
-                    writer = new FileWriter(fileName + ".rdf");
-                    RDFDataMgr.write(writer, this.models.getModel(), RDFFormat.RDFXML);
-                    writer.close();
+                    output = new FileOutputStream(new File(fileName + ".rdf"));
+                    RDFDataMgr.write(output, createDefaultModel, RDFFormat.RDFXML);
+                    output.close();
                 }
                 JOptionPane.showMessageDialog(this, "Your file has been saved!", "File saved", JOptionPane.INFORMATION_MESSAGE);
+                fc.resetChoosableFileFilters();
+                fc.addChoosableFileFilter(new FileNameExtensionFilter("Text file", "txt"));
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "File could not be saved", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -264,19 +318,14 @@ public class App extends javax.swing.JFrame {
         
         if(res == JFileChooser.APPROVE_OPTION) {
             FileReader reader = new FileReader(fc.getSelectedFile().getAbsolutePath());
-            try {
-                connection = new TwitterConnection((HashMap<String, String>) reader.getKeys());
-                boolean established = connection.createConnection();
-                if(established) {
-                    JOptionPane.showMessageDialog(this, "Connection has been established!", 
-                            "Connection established", JOptionPane.INFORMATION_MESSAGE);
-                }else{
-                    JOptionPane.showMessageDialog(this, "Connection failed!", 
-                            "Error to connect", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (TwitterException ex) {
-                JOptionPane.showMessageDialog(this, "Connection failed!", 
-                            "Error to connect", JOptionPane.ERROR_MESSAGE);
+            connection = new TwitterConnection((HashMap<String, String>) reader.getKeys());
+            boolean established = connection.createConnection();
+            if(established) {
+                JOptionPane.showMessageDialog(this, "Connection has been established!",
+                        "Connection established", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(this, "Connection failed!",
+                        "Error to connect", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_keysMenuActionPerformed
@@ -302,25 +351,30 @@ public class App extends javax.swing.JFrame {
     }//GEN-LAST:event_turtleFormatActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        if (term.getText().trim().isEmpty() || theme.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "All fields must be filled", "Incomplete fields", 
-                    JOptionPane.WARNING_MESSAGE);
+        if (term.getText().trim().isEmpty() || theme.getText().trim().isEmpty()
+            || themeDescription.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled", "Incomplete fields",
+                JOptionPane.WARNING_MESSAGE);
         } else if(this.connection == null) {
             JOptionPane.showMessageDialog(this, "Connection hasn't been established.\n"
-                    + "To import keys go to:\nFile > Import Keys", 
-                    "Keys not imported", JOptionPane.WARNING_MESSAGE);
+                + "To import keys go to:\nFile > Import Keys",
+                "Keys not imported", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
-                List<Status> tweets = connection.searchTweets(theme.getText(), (int) tweetsSpinner.getValue());
-                this.models = new RDFModel(term.getText(), theme.getText());
-                for (Status tweet : tweets) {
-                    this.models.createModel(tweet);
-                }
-                JOptionPane.showMessageDialog(this, "Model created!\nTo save model go to:\nFile > Save", 
-                            "Model generated", JOptionPane.INFORMATION_MESSAGE);
+                List<Status> tweets = connection.searchTweets(term.getText(), (int) tweetsSpinner.getValue());
+                tweets.forEach(tweet -> {
+                    tweetsRetrieved.setText(tweetsRetrieved.getText() + "User: " + tweet.getUser().getName() + "\n"
+                            + "Tweet: " + tweet.getText()+ "\n\n");
+                });
+                this.models = new RDFModel(term.getText(), theme.getText(), themeDescription.getText());
+                tweets.forEach(tweet -> {
+                    this.models.createModel(tweet, createDefaultModel);
+                });
+                JOptionPane.showMessageDialog(this, "Added term to model!\nIf you want to save the model go to:\nFile > Save",
+                    "Model generated", JOptionPane.INFORMATION_MESSAGE);
             } catch (TwitterException ex) {
-                JOptionPane.showMessageDialog(this, "An error has ocurred in retrieving data!", 
-                            "Error to retrieve", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "An error has occurred in retrieving data!",
+                    "Error to retrieve", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_searchActionPerformed
@@ -367,6 +421,8 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JLabel formatLabel;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JScrollPane jScrollPane;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem keysMenu;
     private javax.swing.JMenuBar menu;
     private javax.swing.JLabel numTweetsLabel;
@@ -377,8 +433,12 @@ public class App extends javax.swing.JFrame {
     private javax.swing.JTextField term;
     private javax.swing.JLabel termLabel;
     private javax.swing.JTextField theme;
+    private javax.swing.JTextArea themeDescription;
+    private javax.swing.JLabel themeDescriptionLabel;
     private javax.swing.JLabel themeLabel;
     private javax.swing.JRadioButton turtleFormat;
+    private javax.swing.JTextArea tweetsRetrieved;
+    private javax.swing.JLabel tweetsRetrievedLabel;
     private javax.swing.JSpinner tweetsSpinner;
     // End of variables declaration//GEN-END:variables
 }

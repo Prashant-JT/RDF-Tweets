@@ -20,25 +20,19 @@ public class TwitterConnection {
     private static Map<String, String> keys;
     private static Twitter twitter;
     
-    public TwitterConnection(HashMap<String, String> keys) throws TwitterException {
+    public TwitterConnection(HashMap<String, String> keys) {
         TwitterConnection.keys = keys;
         createConnection();
     }
     
-    static Twitter setConfiguration(){
-        Twitter twitter = TwitterFactory.getSingleton();
-        return twitter;
-    }
-    
     public static List<Status> searchTweets(String term, int count) throws TwitterException {
-        createConnection();
         List<Status> res = new ArrayList();
         int remainingTweets = count;
         Query query = new Query(term);
         
         try{
             while(remainingTweets > 0) {
-                int queryCount =  remainingTweets > 100 ? 100 : remainingTweets;
+                int queryCount =  remainingTweets > 50 ? 50 : remainingTweets;
                 query.count(queryCount);
                 QueryResult result = twitter.search(query);
                 res.addAll(result.getTweets());
@@ -56,7 +50,7 @@ public class TwitterConnection {
         return res;
     }
 
-    public static boolean createConnection() throws TwitterException {
+    public boolean createConnection() {
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setOAuthConsumerKey(keys.get("ConsumerKey"));
         cb.setOAuthConsumerSecret(keys.get("ConsumerSecret"));
